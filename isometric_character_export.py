@@ -2,7 +2,7 @@
 #Created on 2023-10-22 by Jacob Bethany
 #Purpose: To render animated 3D character models for use in 2D isometric games/animations.
 #Methodology: I clamp the camera to a bezier circle; set it as the parent of the circle;
-#and rotate the circle. This causes the camera rotates along the circular path. Finally, I
+#and rotate the circle. This causes the camera to rotate along a circular path. Finally, I
 #set the camera to track an invisble object situated in the center of the character to capture.
 #For each rotation, each key frame of the animation will be rendered to a file.
 #
@@ -13,7 +13,7 @@
 #-Create an invisible cube object to place inside of the character that you want to render.
 #(In its viewport, uncheck its render state.)
 #-Create a bezier circle.
-#-Clamp the camera to the bezier circle through a new constraint.
+#-Clamp the camera to the bezier circle's Z axis through a new constraint.
 #-Add a TrackTo constraint to the camera on the unrendered object.
 #(Should be -Z and Y in the settings for the TrackTo constraint in the camera on the cube.)
 #-Move the bezier circle above the character model so that the camera looks down on it
@@ -22,7 +22,8 @@
 #as close to a 45 degree angle as possible.
 #
 #Notes:
-#I find it easier to situate the character object and bezier circle at (0, 0, 0).
+#I find it easier to situate the character object and bezier circle at (0, 0, 0) and
+#transform the circle's Z coordinate to be above the model to capture.
 #Additional notes:
 #This script will automatically determine which frames are key frames and export only those
 #ones.
@@ -38,28 +39,25 @@
 #in the correct direction (even with hotkey changes and Python script API call deprecations),
 #it would have taken me much longer to understand the required process and to get this script working.
 #
-#License for this script: GPLv3.
-# Please, give back any alterations to the source code so that any other users can enjoy it!
-# Maybe fork the project on Github or something, if you make any changes. I'd love to know,
-# if you've improved the script.
+# This script is licensed under GPLv3 because it could be considered to be derivative of Blender for
+# calling its API functions via Python.
 #
-# In particular, I think that it'd be cool to make it so that
+# While I require no personal attribution from anyone who wishes to use and/or redistribute this
+# script, I'd greatly appreciate it if you were to give back any alterations that you make to the
+# source code so that any other users can enjoy it! Maybe fork the project on Github or something,
+# if you make any changes. I'd love to know, if/how you've improved/updated the script.
+#
+# With regard to contributions, in particular, I think that it'd be cool to make it so that
 # the bezier curve creation, the camera positioning & parenthood, and the ClampTo and TrackTo
 # settings were automated such that the camera is always at such a hight so as to view the
 # character to be rendered at a 45 degree angle with the character sprite filling as much of
 # the rendered frame as possible to obviate the need for any latent scaling of the images.
 #
-# Also, it'd be great to automate lighting around the object in 90 degree increments.
-# With a single light source, some of the rendered images have shadows owing to their
-# positioning relative to the lamp object. Global illumination is often preferable,
-# but having shadows cast on one side can be okay, so long as the side that has the shadow
-# matches the rest of the sprites in your game/animation (probably this should just be a
-# toggle, if it's ever added).
-#
-# I require no personal attribution from anyone who wishes to use and/or redistribute this
-# script. If not for Blender's GPL licensing strategy and this possibly being considered to
-# be a derivative work owing to the leveraging of Blenders API through Python, I'd have
-# licensed this as LGPLv3, instead. Oh well.
+# Also, it'd be great to automate the position(s) of lamps around the model in 45 degree
+# increments along the bezier circle for consistent lighting. From what I've read recently,
+# it seems like some renderer options in Blender may allow for global illumination, which is
+# nice, if true. Still, it'd be nice to have an easy and consistent method to mitigate human
+# error.
 #
 
 import bpy
@@ -215,15 +213,13 @@ Copyright (C) 2023 Jacob Bethany
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
     along with this program. If not, see <https://www.gnu.org/licenses/>.
 
     Contact information:
-    Email address: jabwareman+7@gmail.com
-
-    I can be reached at LinkedIn:
-    https://www.linkedin.com/in/jacobbethany/
+      Email address: jabwareman+7@gmail.com
+      https://www.linkedin.com/in/jacobbethany/
 """
