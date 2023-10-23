@@ -83,6 +83,7 @@ def rotate_camera ( obj_camera, f_angle_in_degrees ):
   obj_camera.rotation_euler.z = radians ( f_angle_in_degrees )
   #update the scene to use the new camera position.
   bpy.context.view_layer.update (  )
+  #A hack to force the scene to redraw before the Python script completes.
   bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 #Call this with the directory path (ending with a '/') where you want
@@ -221,7 +222,7 @@ Copyright (C) 2023 Jacob Bethany
     along with this program. If not, see <https://www.gnu.org/licenses/>.
 
     Contact information:
-    Email address: jabwareman@gmail+7.com
+    Email address: jabwareman+7@gmail.com
 
     I can be reached at LinkedIn:
     https://www.linkedin.com/in/jacobbethany/
