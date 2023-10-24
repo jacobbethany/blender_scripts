@@ -134,44 +134,33 @@ def render_animated_isometric_character (
       #print ( "Rendering frames for \"" + ary_camera_relative_position_names [ i_angle_index ] + "\" direction." )
       print ( "Direction of character from viewer's perspective: " + str ( ary_character_direction_names [ i_angle_index ] ) )
 
-      #Set camera angle via parent
+      #Note: We're setting the angle of the bezier circle to which the camera
+      #should be clamped on the Z axis. This should cause the camera to rotate
+      #with it thereby following its path.
       f_current_angle = i_angle_index * f_angle_delta_per_iteration
       print ( "Current angle: " + str ( f_current_angle ) )
       rotate_camera ( obj_camera, f_current_angle )
 
       #The actual index may jump around, since we're rendering only the key frames,
-      #so the file name used for each rendered frame will include the key frame index
-      #for this particular perspective from the camera.
+      #so the file name used for each rendered frame will include the key frame's
+      #index for this particular perspective from the camera.
       i_effective_frame_index = 0
 
-      #Render frames i_initial_frame_index -> i_final_frame_index, inclusive.
+      #Render each of the key frames in the list that we gathered.
       for i_frame_index in ary_key_frames:
 
         #Choose the frame to render by its index.
         obj_scene .frame_set ( i_frame_index )
 
-        #Make a string out of the effective frame index and prepad it with zeros,
-        #if it's less than 1k to force a 3-digit base 10 number. E.G. "000" vs "0."
-        str_frame_number = str (
-          i_effective_frame_index
-        ) .zfill ( 3 )
-
-        #Create the file name from the project name, current angle of rotation,
-        #and the current key frame index.
-        str_file_name = "{project}_{angle}.{frame_number}" .format (
+        #Set the file path to use for rendering to the user-defined directory
+        #appended with the file name consisting of the project name, angle index,
+        #frame number, and file extension.
+        obj_scene.render.filepath = "{directory_path}{project}_{angle}.{frame_number}{extension}" .format (
+          directory_path = str_render_directory_path,
           project = bpy.path.basename ( bpy.data.filepath ),
           angle = i_angle_index,
-          frame_number = str_frame_number
-        )
-
-        #Append the file extension of the rendered image to the file name.
-        str_file_name += obj_scene .render .file_extension
-
-        #Set the file path to use for rendering to the user-defined directory
-        #appended with the file name that we've just generated.
-        obj_scene.render.filepath = join (
-          str_render_directory_path,
-          str_file_name
+          frame_number = str ( i_effective_frame_index ) .zfill ( 3 ), #three digit base-10 frame identifier.
+          extension = obj_scene .render .file_extension
         )
 
         #Render the image to the file path specified hereinabove.
